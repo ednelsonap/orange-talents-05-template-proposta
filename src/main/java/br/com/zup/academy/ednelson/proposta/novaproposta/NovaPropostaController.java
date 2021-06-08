@@ -1,8 +1,8 @@
-package br.com.zup.academy.ednelson.proposta.nova_proposta;
+package br.com.zup.academy.ednelson.proposta.novaproposta;
 
 import java.net.URI;
+import java.util.Optional;
 
-import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
@@ -15,17 +15,23 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 public class NovaPropostaController {
-	
-	@Autowired
-	private EntityManager manager;
 
+	@Autowired
+	private PropostaRepository propostaRepository;
+	
 	@PostMapping("/proposta")
 	@Transactional
 	public ResponseEntity<?> criar(@RequestBody @Valid NovaPropostaRequest request,
 			UriComponentsBuilder uriBuilder){
 		
+		Optional<Proposta> possivelProposta = propostaRepository.findByDocumento(request.getDocumento());
+		
+		if (possivelProposta.isPresent()) {
+			return ResponseEntity.unprocessableEntity().body("Já existe uma proposta para este solicitante");
+		}
+		
 		Proposta proposta = request.toModel();
-		manager.persist(proposta);
+		propostaRepository.save(proposta);
 
 		URI uri = uriBuilder.path("/proposta/{id}").buildAndExpand(proposta.getUuid()).toUri();
 		return ResponseEntity.created(uri).build();
