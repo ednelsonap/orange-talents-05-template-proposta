@@ -71,6 +71,34 @@ public class Proposta {
 		return uuid;
 	}
 
+	public String getNome() {
+		return nome;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public String getDocumento() {
+		return documento;
+	}
+
+	public String getEndereco() {
+		return endereco;
+	}
+
+	public BigDecimal getSalarioBruto() {
+		return salarioBruto;
+	}
+
+	public Estado getEstado() {
+		return estado;
+	}
+
+	public Cartao getCartao() {
+		return cartao;
+	}
+
 	public void verificaRestricaoFinanceira(SolicitacaoAnaliseResourceClient solicitacaoAnaliseResourceClient) throws JsonMappingException, JsonProcessingException {		
 		try {
 			SolicitacaoAnaliseRequest solicitacao = new SolicitacaoAnaliseRequest(documento, nome, this.uuid);

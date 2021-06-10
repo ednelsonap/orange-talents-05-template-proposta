@@ -13,6 +13,12 @@ public class CartaoResponse {
 	@JsonProperty
 	private BigDecimal limite;
 	
+	public CartaoResponse(Cartao cartao) {
+		this.id = cartao.getNumero();
+		this.titular = cartao.getTitular();
+		this.limite = cartao.getLimite();
+	}
+
 	public Cartao toModel() {
 		return new Cartao(id, titular, limite);
 	}
