@@ -10,6 +10,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -21,6 +22,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import br.com.zup.academy.ednelson.proposta.cartao.Cartao;
+import br.com.zup.academy.ednelson.proposta.feign.SolicitacaoAnaliseResourceClient;
 import br.com.zup.academy.ednelson.proposta.validation.CpfOrCnpj;
 import feign.FeignException;
 
@@ -46,6 +49,8 @@ public class Proposta {
 	private BigDecimal salarioBruto;
 	@Enumerated(EnumType.STRING)
 	private Estado estado;
+	@OneToOne
+	private Cartao cartao;
 	
 	@Deprecated
 	public Proposta() {
@@ -66,10 +71,10 @@ public class Proposta {
 		return uuid;
 	}
 
-	public void verificaRestricaoFinanceira(ConsultaRestricaoClient consultaRestricaoClient) throws JsonMappingException, JsonProcessingException {		
+	public void verificaRestricaoFinanceira(SolicitacaoAnaliseResourceClient solicitacaoAnaliseResourceClient) throws JsonMappingException, JsonProcessingException {		
 		try {
 			SolicitacaoAnaliseRequest solicitacao = new SolicitacaoAnaliseRequest(documento, nome, this.uuid);
-			ResultadoAnaliseDto resultado = consultaRestricaoClient.consultar(solicitacao);		
+			ResultadoAnaliseDto resultado = solicitacaoAnaliseResourceClient.consultar(solicitacao);		
 			if(resultado.getResultadoSolicitacao().equals("SEM_RESTRICAO")) {
 				this.estado = Estado.ELEGIVEL;
 			}	
@@ -78,8 +83,13 @@ public class Proposta {
 					ResultadoAnaliseDto.class);
             if (e.status() == HttpStatus.UNPROCESSABLE_ENTITY.value()
                     && resultado.getResultadoSolicitacao().equals("COM_RESTRICAO")) {
-                estado = Estado.NAO_ELEGIVEL;
+                this.estado = Estado.NAO_ELEGIVEL;
             }
 		}
 	}
+
+	public void setCartao(Cartao cartao) {
+		this.cartao = cartao;
+	}
+	
 }

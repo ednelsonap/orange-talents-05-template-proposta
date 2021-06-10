@@ -16,14 +16,15 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
+import br.com.zup.academy.ednelson.proposta.feign.SolicitacaoAnaliseResourceClient;
+
 @RestController
 public class NovaPropostaController {
 
 	@Autowired
 	private PropostaRepository propostaRepository;
-	
 	@Autowired
-	private ConsultaRestricaoClient consultaRestricaoClient;
+	private SolicitacaoAnaliseResourceClient consultaRestricaoClient;
 	
 	@PostMapping("/proposta")
 	@Transactional
@@ -39,7 +40,7 @@ public class NovaPropostaController {
 		Proposta proposta = request.toModel();
 		propostaRepository.save(proposta);
 		proposta.verificaRestricaoFinanceira(consultaRestricaoClient);
-
+		
 		URI uri = uriBuilder.path("/proposta/{id}").buildAndExpand(proposta.getUuid()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
