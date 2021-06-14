@@ -21,12 +21,12 @@ public class AssociaCartaoAProposta {
 	@Autowired
 	private CartaoRepository cartaoRepository;
 
-	@Scheduled(fixedDelay = 10000)
+	@Scheduled(fixedDelayString = "${delay.scheduled.cartao}")
 	public void associar() {
 		List<Proposta> propostas = propostaRepository.findByEstadoAndCartaoIsNull(Estado.ELEGIVEL);
 
 		propostas.forEach(proposta -> {
-			CartaoResponse cartaoResponse = cartaoResourceClient.gerarCartaoParaAProposta(proposta.getUuid());
+			CartaoResourceResponse cartaoResponse = cartaoResourceClient.gerarCartaoParaAProposta(proposta.getUuid());
 			Cartao cartao = cartaoResponse.toModel();
 			cartaoRepository.save(cartao);
 			proposta.setCartao(cartao);

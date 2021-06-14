@@ -4,8 +4,8 @@ import java.math.BigDecimal;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class CartaoResponse {
-	
+public class CartaoResourceResponse {
+
 	@JsonProperty
 	private String id;
 	@JsonProperty
@@ -13,9 +13,7 @@ public class CartaoResponse {
 	@JsonProperty
 	private BigDecimal limite;
 
-	public CartaoResponse(Cartao cartao) {
-		this.id = cartao.getNumero();
-		this.titular = cartao.getTitular();
-		this.limite = cartao.getLimite();
+	public Cartao toModel() {
+		return new Cartao(id, titular, limite);
 	}
 }

@@ -1,6 +1,36 @@
 version: '3'
 services:
 
+  proposta:
+   container_name: proposta
+   build:
+    context: ./
+    dockerfile: ./Dockerfile
+   image: ednelson/proposta
+   ports:
+    - 8080:8080
+   links:
+    - mysql-proposta
+   depends_on:
+    - mysql-proposta
+    - analise
+    - contas
+   environment:
+     ANALISE_FINANCEIRA_URL: http://analise:9999
+     CARTAO_RESOURCE_URL: http://contas:8888
+   restart: always
+
+  mysql-proposta:
+   image: mysql:8.0.25
+   ports:
+    - 3307:3306
+   environment:
+    - MYSQL_DATABASE=proposta
+    - MYSQL_ROOT_PASSWORD=root
+
+   volumes:
+    - mysql-volume:/var/lib/mysql
+
   zookeeper:
     image: "confluentinc/cp-zookeeper:5.2.1"
     environment:
@@ -133,17 +163,6 @@ services:
       VAULT_DEV_ROOT_TOKEN_ID: ee413645-dbe8-4848-afc6-6bb2768ada75
       VAULT_TOKEN: ee413645-dbe8-4848-afc6-6bb2768ada75
       VAULT_ADDR: http://127.0.0.1:8200
-
-  mysql:
-   image: mysql:8.0.24
-   ports:
-    - 3306:3306
-   environment:
-    MYSQL_ROOT_HOST: "%"
-    MYSQL_DATABASE: proposta
-    MYSQL_ROOT_PASSWORD: root
-   volumes:
-    - mysql-volume:/var/lib/mysql
 
 volumes:
   grafana-volume:

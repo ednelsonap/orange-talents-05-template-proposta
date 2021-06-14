@@ -24,7 +24,7 @@ public class NovaPropostaController {
 	@Autowired
 	private PropostaRepository propostaRepository;
 	@Autowired
-	private SolicitacaoAnaliseResourceClient consultaRestricaoClient;
+	private SolicitacaoAnaliseResourceClient solicitacaoAnaliseResourceClient;
 	
 	@PostMapping("/proposta")
 	@Transactional
@@ -39,9 +39,10 @@ public class NovaPropostaController {
 		
 		Proposta proposta = request.toModel();
 		propostaRepository.save(proposta);
-		proposta.verificaRestricaoFinanceira(consultaRestricaoClient);
+		proposta.verificaRestricaoFinanceira(solicitacaoAnaliseResourceClient);
 		
 		URI uri = uriBuilder.path("/proposta/{id}").buildAndExpand(proposta.getUuid()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
+	 
 }

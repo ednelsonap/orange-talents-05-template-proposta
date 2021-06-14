@@ -15,5 +15,5 @@ public interface PropostaRepository extends JpaRepository<Proposta, Long> {
 	List<Proposta> findByEstadoAndCartaoIsNull(@Param("pEstado") Estado elegivel);
 
 	Optional<Proposta> findByUuid(String idProposta);
-	
+
 }

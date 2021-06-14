@@ -3,6 +3,7 @@ package br.com.zup.academy.ednelson.proposta.novaproposta;
 import java.math.BigDecimal;
 import java.util.UUID;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -16,21 +17,19 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
-import org.springframework.http.HttpStatus;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.zup.academy.ednelson.proposta.cartao.Cartao;
 import br.com.zup.academy.ednelson.proposta.feign.SolicitacaoAnaliseResourceClient;
 import br.com.zup.academy.ednelson.proposta.validation.CpfOrCnpj;
-import feign.FeignException;
+import feign.FeignException.FeignClientException;
 
 @Entity
 public class Proposta {
 
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String uuid = UUID.randomUUID().toString();
 	@NotBlank
@@ -49,14 +48,14 @@ public class Proposta {
 	private BigDecimal salarioBruto;
 	@Enumerated(EnumType.STRING)
 	private Estado estado;
-	@OneToOne
+	@OneToOne(cascade = CascadeType.REMOVE)
 	private Cartao cartao;
-	
+
 	@Deprecated
 	public Proposta() {
-		
+
 	}
-	
+
 	public Proposta(@NotBlank String nome, @NotBlank @Email String email, @NotBlank String documento,
 			@NotBlank String endereco, @NotNull @Positive BigDecimal salarioBruto) {
 		super();
@@ -99,25 +98,21 @@ public class Proposta {
 		return cartao;
 	}
 
-	public void verificaRestricaoFinanceira(SolicitacaoAnaliseResourceClient solicitacaoAnaliseResourceClient) throws JsonMappingException, JsonProcessingException {		
+	public void verificaRestricaoFinanceira(SolicitacaoAnaliseResourceClient solicitacaoAnaliseResourceClient)
+			throws JsonMappingException, JsonProcessingException {
 		try {
 			SolicitacaoAnaliseRequest solicitacao = new SolicitacaoAnaliseRequest(documento, nome, this.uuid);
-			ResultadoAnaliseDto resultado = solicitacaoAnaliseResourceClient.consultar(solicitacao);		
-			if(resultado.getResultadoSolicitacao().equals("SEM_RESTRICAO")) {
+			ResultadoAnaliseDto resultado = solicitacaoAnaliseResourceClient.consultar(solicitacao);
+			if (resultado.getResultadoSolicitacao().equals("SEM_RESTRICAO")) {
 				this.estado = Estado.ELEGIVEL;
-			}	
-		} catch (FeignException e) {
-			ResultadoAnaliseDto resultado = new ObjectMapper().readValue(e.contentUTF8(),
-					ResultadoAnaliseDto.class);
-            if (e.status() == HttpStatus.UNPROCESSABLE_ENTITY.value()
-                    && resultado.getResultadoSolicitacao().equals("COM_RESTRICAO")) {
-                this.estado = Estado.NAO_ELEGIVEL;
-            }
+			}
+		} catch (FeignClientException.UnprocessableEntity e) {
+			this.estado = Estado.NAO_ELEGIVEL;
 		}
 	}
 
 	public void setCartao(Cartao cartao) {
 		this.cartao = cartao;
 	}
-	
+
 }
