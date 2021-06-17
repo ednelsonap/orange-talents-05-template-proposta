@@ -14,7 +14,7 @@ public class BuscarPropostaController {
 	@Autowired
 	private PropostaRepository propostaRepository;
 	
-	@GetMapping("/proposta/{id}")
+	@GetMapping("/api/propostas/{id}")
 	private ResponseEntity<Object> buscarProposta(@PathVariable(required = true, value = "id") String idProposta) {
 		Optional<Proposta> possivelProposta = propostaRepository.findByUuid(idProposta);
 		if (possivelProposta.isEmpty()){

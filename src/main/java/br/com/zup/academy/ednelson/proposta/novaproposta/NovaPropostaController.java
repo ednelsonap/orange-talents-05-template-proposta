@@ -26,7 +26,7 @@ public class NovaPropostaController {
 	@Autowired
 	private SolicitacaoAnaliseResourceClient solicitacaoAnaliseResourceClient;
 	
-	@PostMapping("/proposta")
+	@PostMapping("/api/propostas")
 	@Transactional
 	public ResponseEntity<?> criar(@RequestBody @Valid NovaPropostaRequest request,
 			UriComponentsBuilder uriBuilder) throws JsonMappingException, JsonProcessingException{
@@ -41,7 +41,7 @@ public class NovaPropostaController {
 		propostaRepository.save(proposta);
 		proposta.verificaRestricaoFinanceira(solicitacaoAnaliseResourceClient);
 		
-		URI uri = uriBuilder.path("/proposta/{id}").buildAndExpand(proposta.getUuid()).toUri();
+		URI uri = uriBuilder.path("/api/propostas/{id}").buildAndExpand(proposta.getUuid()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
 	 

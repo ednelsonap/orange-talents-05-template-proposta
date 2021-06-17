@@ -24,7 +24,7 @@ public class NovaBiometriaController {
 	@Autowired
 	private BiometriaRepository biometriaRepository;
 
-	@PostMapping("/cartao/{id}/biometria")
+	@PostMapping("/api/propostas/cartao/{id}/biometria")
 	private ResponseEntity<?> cadastrar(@PathVariable("id") String uuidCartao,
 			@RequestBody @Valid NovaBiometriaRequest request, UriComponentsBuilder uriBuilder) {
 
@@ -37,7 +37,7 @@ public class NovaBiometriaController {
 		Biometria biometria = request.toModel(cartao);
 		biometriaRepository.save(biometria);
 
-		URI uri = uriBuilder.path("/cartao/{id_cartao}/biometria/{id}").buildAndExpand(cartao.getUuid(), biometria.getUuid()).toUri();
+		URI uri = uriBuilder.path("/api/propostas/cartao/{id_cartao}/biometria/{id}").buildAndExpand(cartao.getUuid(), biometria.getUuid()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
 }

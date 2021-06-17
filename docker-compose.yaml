@@ -15,9 +15,13 @@ services:
     - mysql-proposta
     - analise
     - contas
+    - keycloak
    environment:
+     DATABASE_URL: jdbc:mysql://mysql-proposta:3306/proposta
      ANALISE_FINANCEIRA_URL: http://analise:9999
      CARTAO_RESOURCE_URL: http://contas:8888
+     KEYCLOAK_ISSUER_URI: http://keycloak:8080/auth/realms/proposta
+     KEYCLOAK_JWKS_URI: http://keycloak:8080/auth/realms/proposta/protocol/openid-connect/certs
    restart: always
 
   mysql-proposta:
@@ -91,6 +95,7 @@ services:
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: Pa55w0rd
       POSTGRES_PORT_5432_TCP_ADDR: 127.0.0.1
+      #KEYCLOAK_FRONTEND_URL: http://keycloak:18080/auth
 
   analise:
     image: 'zupacademy/analise-financeira'
