@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.UUID;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -29,6 +31,8 @@ public class Cartao {
 	private BigDecimal limite;
 	@OneToMany(mappedBy = "cartao")
 	private List<Biometria> biometrias = new ArrayList<>();
+	@Enumerated(EnumType.STRING)
+	private StatusCartao status = StatusCartao.ATIVO;
 	
 	@Deprecated
 	public Cartao() {
@@ -57,4 +61,11 @@ public class Cartao {
 		return limite;
 	}
 	
+	public boolean bloqueado(){
+        return status.equals(StatusCartao.BLOQUEADO);
+    }
+	
+	public void bloquear() {
+		this.status = StatusCartao.BLOQUEADO;
+	}
 }

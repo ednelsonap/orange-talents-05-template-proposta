@@ -22,6 +22,7 @@ services:
      CARTAO_RESOURCE_URL: http://contas:8888
      KEYCLOAK_ISSUER_URI: http://keycloak:8080/auth/realms/proposta
      KEYCLOAK_JWKS_URI: http://keycloak:8080/auth/realms/proposta/protocol/openid-connect/certs
+     SPRING_PROFILES_ACTIVE: prod
    restart: always
 
   mysql-proposta:
