@@ -65,6 +65,10 @@ public class Cartao {
         return status.equals(StatusCartao.BLOQUEADO);
     }
 	
+	public void alterarStatusParaBloqueioPendente() {
+		this.status = StatusCartao.BLOQUEIO_PENDENTE;
+	}
+	
 	public void bloquear() {
 		this.status = StatusCartao.BLOQUEADO;
 	}

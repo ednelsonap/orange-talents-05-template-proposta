@@ -23,6 +23,7 @@ services:
      KEYCLOAK_ISSUER_URI: http://keycloak:8080/auth/realms/proposta
      KEYCLOAK_JWKS_URI: http://keycloak:8080/auth/realms/proposta/protocol/openid-connect/certs
      SPRING_PROFILES_ACTIVE: prod
+     DELAY_SCHEDULED_NOTIFICA_BLOQUEIO: 3000
    restart: always
 
   mysql-proposta:
