@@ -24,7 +24,6 @@ public class AssociaCartaoAProposta {
 	@Scheduled(fixedDelayString = "${delay.scheduled.cartao}")
 	public void associar() {
 		List<Proposta> propostas = propostaRepository.findByEstadoAndCartaoIsNull(Estado.ELEGIVEL);
-
 		propostas.forEach(proposta -> {
 			CartaoResourceResponse cartaoResponse = cartaoResourceClient.gerarCartaoParaAProposta(proposta.getUuid());
 			Cartao cartao = cartaoResponse.toModel();
