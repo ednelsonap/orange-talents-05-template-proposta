@@ -16,8 +16,8 @@ public class AvisoViagem {
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String uuid = UUID.randomUUID().toString();
-	private String destinoDaViagem;
-	private LocalDate dataDeTerminoDaViagem;
+	private String destino;
+	private LocalDate validoAte;
 	private LocalDateTime instanteDoAviso = LocalDateTime.now();
 	private String ipCliente;
 	private String userAgentCliente;
@@ -29,13 +29,17 @@ public class AvisoViagem {
 
 	}
 	
-	public AvisoViagem(String destinoDaViagem, LocalDate dataDeTerminoDaViagem, String ipCliente,
+	public AvisoViagem(String destino, LocalDate validoAte, String ipCliente,
 			String userAgentCliente, Cartao cartao) {
-		this.destinoDaViagem = destinoDaViagem;
-		this.dataDeTerminoDaViagem = dataDeTerminoDaViagem;
+		this.destino = destino;
+		this.validoAte = validoAte;
 		this.ipCliente = ipCliente;
 		this.userAgentCliente = userAgentCliente;
 		this.cartao = cartao;
 	}
-	
+
+	public String getUuid() {
+		return uuid;
+	}
+
 }
