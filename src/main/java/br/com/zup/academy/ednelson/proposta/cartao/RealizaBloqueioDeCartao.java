@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import br.com.zup.academy.ednelson.proposta.feign.CartaoResourceClient;
+import br.com.zup.academy.ednelson.proposta.feign.CartaoClient;
 import feign.FeignException;
 
 @Component
@@ -18,7 +18,7 @@ public class RealizaBloqueioDeCartao {
 	@Autowired
 	private CartaoRepository cartaoRepository;
 	@Autowired
-	private CartaoResourceClient cartaoResourceClient;
+	private CartaoClient cartaoResourceClient;
 
 	public void bloquear(Cartao cartao, String idDoClienteQueBloqueou, String userAgentDoClienteQueBloqueou) {
 		Bloqueio bloqueio = new Bloqueio(cartao, idDoClienteQueBloqueou, userAgentDoClienteQueBloqueou); 

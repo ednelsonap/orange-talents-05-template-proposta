@@ -2,7 +2,9 @@ package br.com.zup.academy.ednelson.proposta.cartao;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.persistence.Entity;
@@ -16,6 +18,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import br.com.zup.academy.ednelson.proposta.biometria.Biometria;
+import br.com.zup.academy.ednelson.proposta.paypal.Carteira;
 
 @Entity
 public class Cartao {
@@ -33,6 +36,8 @@ public class Cartao {
 	private List<Biometria> biometrias = new ArrayList<>();
 	@Enumerated(EnumType.STRING)
 	private StatusCartao status = StatusCartao.ATIVO;
+	@OneToMany(mappedBy = "cartao")
+	private Set<Carteira> carteiras = new HashSet<Carteira>();
 	
 	@Deprecated
 	public Cartao() {
@@ -45,6 +50,10 @@ public class Cartao {
 		this.limite = limite;
 	}
 
+	public Long getId() {
+		return id;
+	}
+	
 	public String getUuid() {
 		return uuid;
 	}

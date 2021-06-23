@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.zup.academy.ednelson.proposta.feign.AvisoViagemFeignResponse;
-import br.com.zup.academy.ednelson.proposta.feign.CartaoResourceClient;
+import br.com.zup.academy.ednelson.proposta.feign.CartaoClient;
 import feign.FeignException;
 
 @RestController
@@ -25,7 +25,7 @@ public class NovoAvisoViagemController {
 	@Autowired
 	private CartaoRepository cartaoRepository;
 	@Autowired
-	private CartaoResourceClient cartaoResourceClient;
+	private CartaoClient cartaoClient;
 
 	@PostMapping("/api/propostas/cartao/{uuid}/avisos")
 	private ResponseEntity<?> cadastrar(@PathVariable("uuid") UUID id, @RequestBody @Valid AvisoViagemRequest request,
@@ -39,7 +39,7 @@ public class NovoAvisoViagemController {
 
 		try {
 			
-			AvisoViagemFeignResponse response = cartaoResourceClient.notificaAvisoViagem(cartao.get().getNumero(), request);
+			AvisoViagemFeignResponse response = cartaoClient.notificaAvisoViagem(cartao.get().getNumero(), request);
 			
 			if (response.getResultado().equals("CRIADO")) {
 				AvisoViagem avisoViagem = request.toModel(cartao.get(), req.getRemoteAddr(),

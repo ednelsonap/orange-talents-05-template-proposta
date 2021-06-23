@@ -9,9 +9,10 @@ import br.com.zup.academy.ednelson.proposta.cartao.AvisoViagemRequest;
 import br.com.zup.academy.ednelson.proposta.cartao.BloqueioCartaoRequest;
 import br.com.zup.academy.ednelson.proposta.cartao.BloqueioCartaoResponse;
 import br.com.zup.academy.ednelson.proposta.cartao.CartaoResourceResponse;
+import br.com.zup.academy.ednelson.proposta.paypal.CarteiraRequest;
 
 @FeignClient(url = "${zup.cartaoresource}/api/cartoes", name = "cartaoResource")
-public interface CartaoResourceClient {
+public interface CartaoClient {
 
 	@RequestMapping(method = RequestMethod.GET, path = "?idProposta={idProposta}")
 	CartaoResourceResponse gerarCartaoParaAProposta(@PathVariable("idProposta") String idProposta);
@@ -21,5 +22,8 @@ public interface CartaoResourceClient {
 
 	@RequestMapping(method = RequestMethod.POST, path = "/{id}/avisos")
 	AvisoViagemFeignResponse notificaAvisoViagem(@PathVariable("id") String idCartao, AvisoViagemRequest request);
+	
+	@RequestMapping(method = RequestMethod.POST, path = "/{id}/carteiras")
+	CarteiraFeignResponse associaCartaoAoPaypal(@PathVariable("id") String idCartao, CarteiraRequest request);
 	
 }
