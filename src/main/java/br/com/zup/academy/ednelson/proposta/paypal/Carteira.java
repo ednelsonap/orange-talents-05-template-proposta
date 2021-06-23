@@ -1,6 +1,8 @@
 package br.com.zup.academy.ednelson.proposta.paypal;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,7 +17,8 @@ public class Carteira {
 	private Long id;
 	private String uuid;
 	private String email;
-	private String emissor;
+	@Enumerated(EnumType.STRING)
+	private Emissor emissor;
 	@ManyToOne
 	private Cartao cartao;
 	
@@ -27,7 +30,7 @@ public class Carteira {
 	public Carteira(String uuid, String email, String emissor, Cartao cartao) {
 		this.uuid = uuid;
 		this.email = email;
-		this.emissor = emissor;
+		this.emissor = Emissor.valueOf(emissor);
 		this.cartao = cartao;
 	}
 	
@@ -39,7 +42,5 @@ public class Carteira {
 		return email;
 	}
 	
-	public String getEmissor() {
-		return emissor;
-	}
+	
 }

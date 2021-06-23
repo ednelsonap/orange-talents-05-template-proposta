@@ -8,8 +8,6 @@ import br.com.zup.academy.ednelson.proposta.cartao.Cartao;
 
 public interface CarteiraRepository extends JpaRepository<Carteira, Long>{
 
-	Optional<Carteira> findByCartaoAndEmissor(Long id, String carteira);
-
-	Optional<Carteira> findByCartaoAndEmissor(Cartao cartao, String carteira);
-
+	Optional<Carteira> findByCartaoAndEmissor(Cartao cartao, Emissor carteira);
+	
 }

@@ -10,7 +10,7 @@ public class CarteiraRequest {
 	@Email
 	@NotBlank
 	private String email;
-	@NotBlank
+	
 	private String carteira;
 
 	public CarteiraRequest(@Email @NotBlank String email, @NotBlank String carteira) {
