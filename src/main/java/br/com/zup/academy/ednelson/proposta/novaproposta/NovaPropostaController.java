@@ -19,6 +19,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
 import br.com.zup.academy.ednelson.proposta.feign.SolicitacaoAnaliseResourceClient;
+import io.opentracing.Span;
+import io.opentracing.Tracer;
 
 @RestController
 public class NovaPropostaController {
@@ -30,7 +32,12 @@ public class NovaPropostaController {
 	@Autowired
 	private PropostasMetrics propostasMetrics;
 	private final Logger logger = LoggerFactory.getLogger(NovaPropostaController.class);
-
+	private final Tracer tracer;
+	
+	public NovaPropostaController(Tracer tracer) {
+		this.tracer = tracer;
+	}
+	
 	@PostMapping("/api/propostas")
 	@Transactional
 	public ResponseEntity<?> criar(@RequestBody @Valid NovaPropostaRequest request, UriComponentsBuilder uriBuilder)
@@ -41,11 +48,14 @@ public class NovaPropostaController {
 		if (possivelProposta.isPresent()) {
 			return ResponseEntity.unprocessableEntity().body("Já existe uma proposta para este solicitante");
 		}
-
+		
 		Proposta proposta = request.toModel();
 		propostaRepository.save(proposta);
 		proposta.verificaRestricaoFinanceira(solicitacaoAnaliseResourceClient);
-
+		
+		Span activeSpan = tracer.activeSpan();
+		activeSpan.setTag("proposta.email", proposta.getEmail());
+		
 		logger.info(String.format("Proposta criada com sucesso para: {nome: %s, documento: %s}",
 				proposta.getNome(), proposta.getDocumento()));
 		
