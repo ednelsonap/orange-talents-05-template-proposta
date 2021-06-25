@@ -15,7 +15,6 @@ services:
     - mysql-proposta
     - analise
     - contas
-    - keycloak
    environment:
      DATABASE_URL: jdbc:mysql://mysql-proposta:3306/proposta
      ANALISE_FINANCEIRA_URL: http://analise:9999
@@ -148,6 +147,7 @@ services:
   prometheus:
     image: prom/prometheus
     volumes:
+     - ./prometheus.yml:/etc/prometheus/prometheus.yml
      - prometheus-volume:/etc/prometheus/
     network_mode: bridge
     ports:

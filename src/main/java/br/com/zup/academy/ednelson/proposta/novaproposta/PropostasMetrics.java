@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
 
-
 @Component
 public class PropostasMetrics {
 
@@ -16,7 +15,7 @@ public class PropostasMetrics {
 	}
 
 	public void contaPropostasCriadas() {
-		contador("proposta_criada");
+		contador("propostas_criadas_total");
 	}
 
 	private void contador(String nomeDaMetrica) {

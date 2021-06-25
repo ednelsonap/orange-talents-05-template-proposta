@@ -25,6 +25,8 @@ public class AssociaCartaoAProposta {
 	private PropostaRepository propostaRepository;
 	@Autowired
 	private CartaoRepository cartaoRepository;
+	@Autowired
+	private CartaoMetricas cartaoMetricas;
 
 	@Scheduled(fixedDelayString = "${delay.scheduled.cartao}")
 	public void associar() {
@@ -43,6 +45,8 @@ public class AssociaCartaoAProposta {
 				
 				logger.info(String.format("Cartão gerado para: {nome: %s, uuidProposta: %s}", proposta.getNome(),
 						proposta.getUuid()));
+				
+				cartaoMetricas.contaCartoesEmitidos();
 				
 			} catch (FeignException e) {
 				
