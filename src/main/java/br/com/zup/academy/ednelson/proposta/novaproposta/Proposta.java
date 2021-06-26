@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -22,7 +23,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 
 import br.com.zup.academy.ednelson.proposta.cartao.Cartao;
 import br.com.zup.academy.ednelson.proposta.feign.SolicitacaoAnaliseResourceClient;
-import br.com.zup.academy.ednelson.proposta.validation.CpfOrCnpj;
+import br.com.zup.academy.ednelson.proposta.security.Criptografador;
 import feign.FeignException.FeignClientException;
 
 @Entity
@@ -38,7 +39,7 @@ public class Proposta {
 	@Email
 	private String email;
 	@NotBlank
-	@CpfOrCnpj
+	@Convert(converter = Criptografador.class)
 	@Column(unique = true)
 	private String documento;
 	@NotBlank
