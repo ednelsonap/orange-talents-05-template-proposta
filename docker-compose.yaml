@@ -20,7 +20,7 @@ services:
      DATABASE_URL: jdbc:mysql://mysql-proposta:3306/proposta
      ANALISE_FINANCEIRA_URL: http://analise:9999
      CARTAO_RESOURCE_URL: http://contas:8888
-     #KEYCLOAK_ISSUER_URI: http://keycloak/auth/realms/proposta
+     #KEYCLOAK_ISSUER_URI: http://keycloak:8080/auth/realms/proposta
      KEYCLOAK_JWKS_URI: http://keycloak:8080/auth/realms/proposta/protocol/openid-connect/certs
      JAEGER_ENDPOINT: http://jaeger:14268/api/traces
      #SPRING_PROFILES_ACTIVE: prod
