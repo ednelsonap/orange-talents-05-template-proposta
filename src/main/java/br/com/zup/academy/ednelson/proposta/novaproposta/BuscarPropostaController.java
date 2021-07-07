@@ -20,7 +20,7 @@ public class BuscarPropostaController {
 		if (possivelProposta.isEmpty()){
 			return ResponseEntity.notFound().build();
 		}
-		System.out.println("oi");
+		
 		return ResponseEntity.ok(new PropostaResponse(possivelProposta.get()));
 	}
 }
