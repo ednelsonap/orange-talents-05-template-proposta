@@ -15,9 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-
 import br.com.zup.academy.ednelson.proposta.feign.SolicitacaoAnaliseResourceClient;
 import io.opentracing.Span;
 import io.opentracing.Tracer;
@@ -40,8 +37,7 @@ public class NovaPropostaController {
 	
 	@PostMapping("/api/propostas")
 	@Transactional
-	public ResponseEntity<?> criar(@RequestBody @Valid NovaPropostaRequest request, UriComponentsBuilder uriBuilder)
-			throws JsonMappingException, JsonProcessingException {
+	public ResponseEntity<?> criar(@RequestBody @Valid NovaPropostaRequest request, UriComponentsBuilder uriBuilder) {
 
 		Optional<Proposta> possivelProposta = propostaRepository.findByDocumento(request.getDocumento());
 

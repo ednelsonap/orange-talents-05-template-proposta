@@ -5,14 +5,14 @@ import javax.persistence.Convert;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.encrypt.Encryptors;
-import org.springframework.security.crypto.keygen.KeyGenerators;
 
 @Convert
 public class Criptografador implements AttributeConverter<String, String> {
 
 	@Value("${proposta.criptografia.password}")
 	private String password;
-	private final String salt = KeyGenerators.string().generateKey();
+	@Value("${proposta.criptografia.salt}")
+	private String salt; //KeyGenerators.string().generateKey();
 
 	@SuppressWarnings("deprecation")
 	@Override

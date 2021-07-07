@@ -18,9 +18,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-
 import br.com.zup.academy.ednelson.proposta.cartao.Cartao;
 import br.com.zup.academy.ednelson.proposta.feign.SolicitacaoAnaliseResourceClient;
 import br.com.zup.academy.ednelson.proposta.security.Criptografador;
@@ -99,8 +96,7 @@ public class Proposta {
 		return cartao;
 	}
 
-	public void verificaRestricaoFinanceira(SolicitacaoAnaliseResourceClient solicitacaoAnaliseResourceClient)
-			throws JsonMappingException, JsonProcessingException {
+	public void verificaRestricaoFinanceira(SolicitacaoAnaliseResourceClient solicitacaoAnaliseResourceClient) {
 		try {
 			SolicitacaoAnaliseRequest solicitacao = new SolicitacaoAnaliseRequest(documento, nome, this.uuid);
 			ResultadoAnaliseDto resultado = solicitacaoAnaliseResourceClient.consultar(solicitacao);
